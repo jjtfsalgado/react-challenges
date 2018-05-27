@@ -1,9 +1,0 @@
-[submodule ".idea/001_tictactoe"]
-	path = .idea/001_tictactoe
-	url = C:\\Users\\Joao\\Documents\\Work\\react_challenges\\001_tictactoe
-[submodule "001_tictactoe"]
-	path = 001_tictactoe
-	url = git@github.com:rwieruch/minimal-react-webpack-babel-setup.git
-[submodule "001_tic_tac_toe"]
-	path = 001_tic_tac_toe
-	url = C:\\Users\\Joao\\Documents\\Work\\react_challenges\\001_tictactoe
