@@ -1,13 +1,8 @@
 import * as React from 'react';
-import style from "./App.less";
-import {Test} from "./test";
+import {Container} from "./container/container";
 
-interface AppProps {
-    message: string,
-};
-export default function({ message }: AppProps ) {
-    return <div className={style.header}>
-        Hello {message}
-        <Test/>
-        </div>;
-};
+export class App extends React.PureComponent<{},{}>{
+    render(){
+        return <Container/>
+    }
+}

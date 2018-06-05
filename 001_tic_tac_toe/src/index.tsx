@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import App from './components/App';
+import {App} from "./components/app";
 
 render(
-    <App message="World lets sekjjjjing" />,
+    <App />,
     document.getElementById('root'),
 );

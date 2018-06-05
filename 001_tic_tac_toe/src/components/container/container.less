@@ -1,0 +1,28 @@
+
+.container{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 450px;
+  margin: 0 auto;
+  background-color: grey;
+
+    .row{
+      background: red;
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+
+      .box{
+        display: flex;
+        background: yellow;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+      }
+    }
+}
