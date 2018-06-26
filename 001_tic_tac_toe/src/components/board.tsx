@@ -1,6 +1,6 @@
 import * as React from 'react';
 import css from "./board.less";
-import {mode, player} from "./app";
+import {mode, player} from "./game";
 
 interface IContainerProps {
     player: player;
