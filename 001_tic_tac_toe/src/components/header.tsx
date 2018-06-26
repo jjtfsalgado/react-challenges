@@ -1,6 +1,7 @@
 import * as React from 'react';
 import css from "./header.less";
 import {mode, player} from "./game";
+import {Link} from "react-router-dom";
 
 interface IHeaderProps {
     player: player;
@@ -28,14 +29,6 @@ const ScoreScreen = (props: Partial<IHeaderProps> & { type: player }) => {
 
 class Controls extends React.Component<{}, {}> {
     render() {
-        return <div>
-            <button onClick={this.navToMenu}>
-                Menu
-            </button>
-        </div>
-    }
-
-    navToMenu = () => {
-
+        return <Link to="/">Menu</Link>
     }
 }
