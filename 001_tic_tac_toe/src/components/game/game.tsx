@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
-import css from "./app.less";
+import css from "../app.less";
 
 export enum mode {
     one,

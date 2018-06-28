@@ -19,7 +19,7 @@ export class Header extends React.Component<IHeaderProps,{}>{
 }
 
 const ScoreScreen = (props: Partial<IHeaderProps> & { type: player }) => {
-    return <div>
+    return <div className={css.score}>
         {props.player == props.type && (props.type == 0 ? "Player 1" : "Player 2")}
         <div>
             0
@@ -29,6 +29,8 @@ const ScoreScreen = (props: Partial<IHeaderProps> & { type: player }) => {
 
 class Controls extends React.Component<{}, {}> {
     render() {
-        return <Link to="/">Menu</Link>
+        return <div className={css.controls}>
+            <Link to="/">Menu</Link>
+        </div>
     }
 }
