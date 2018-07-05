@@ -5,7 +5,7 @@ import {mode, player} from "./game";
 interface IContainerProps {
     player: player;
     mode: mode;
-    onPlay: () => void;
+    onPlay: (x:number,y:number) => void;
 }
 
 interface IContainerState {
@@ -15,33 +15,33 @@ interface IContainerState {
 export class Board extends React.PureComponent<IContainerProps,IContainerState>{
 
     render() {
-        const {player} = this.props;
+        const {player, onPlay} = this.props;
 
         return <div className={css.board}>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
+                <PlayBox player={player} onPlay={onPlay} x={0} y={0}/>
+                <PlayBox player={player} onPlay={onPlay} x={1} y={0}/>
+                <PlayBox player={player} onPlay={onPlay} x={2} y={0}/>
             </div>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
+                <PlayBox player={player} onPlay={onPlay} x={0} y={1}/>
+                <PlayBox player={player} onPlay={onPlay} x={1} y={1}/>
+                <PlayBox player={player} onPlay={onPlay} x={2} y={1}/>
             </div>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
-                <PlayBox player={player} onPlay={this.onPlay}/>
+                <PlayBox player={player} onPlay={onPlay} x={0} y={2}/>
+                <PlayBox player={player} onPlay={onPlay} x={1} y={2}/>
+                <PlayBox player={player} onPlay={onPlay} x={2} y={2}/>
             </div>
         </div>
     }
-
-    onPlay = () => this.props.onPlay();
 }
 
 class PlayBox extends React.PureComponent<{
     player: player
-    onPlay: () => void;
+    onPlay: (x:number,y:number) => void;
+    x: number;
+    y: number;
 },{
     value: player;
 }>{
@@ -52,12 +52,12 @@ class PlayBox extends React.PureComponent<{
     }
 
     onSelect = () => {
-        const {player, onPlay} = this.props;
+        const {player, onPlay, x, y} = this.props;
 
         if(this.state){return};
 
         this.setState({
             value: player
-        }, () => onPlay())
+        }, () => onPlay(x,y))
     };
 }

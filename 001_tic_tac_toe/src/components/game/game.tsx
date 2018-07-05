@@ -40,5 +40,8 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         </div>
     }
 
-    onPlay = () => this.setState({player: this.state.player == player.p1 ? player.p2 : player.p1});
-}
+    onPlay = (x:number,y:number) => {
+        console.log(x,y);
+        this.setState({player: this.state.player == player.p1 ? player.p2 : player.p1})
+    };
+};
