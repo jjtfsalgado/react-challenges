@@ -31,7 +31,6 @@
     "@types/classnames": "^2.2.4",
     "@types/react-router-dom": "^4.2.7",
     "babel-preset-env": "^1.6.1",
-    "classnames": "^2.2.6",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.3.1"
