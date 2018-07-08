@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as cls from 'classnames';
 import css from "./header.less";
 import {mode, player} from "./game";
 import {Link} from "react-router-dom";
+import {cls} from "../../utils";
 
 interface IHeaderProps {
     player: player;
@@ -21,7 +21,7 @@ export class Header extends React.Component<IHeaderProps,{}>{
 }
 
 const ScoreScreen = (props: Partial<IHeaderProps> & { type: player }) => {
-    return <div className={cls([css.score, props.className])}>
+    return <div className={cls(css.score, props.className)}>
         <div className={css.name}>
             {props.player == props.type && (props.type == 0 ? "Player 1" : "Player 2")}
         </div>

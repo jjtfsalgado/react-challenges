@@ -22,7 +22,7 @@ interface IAppState{
     player: player;
 }
 
-const winningCombinations = [['00','01','02'],['10', '11','12'],['20','21','22'], ['00','10','20'], ['01', '11','21'], ['02','01','02'], ['00','11','22']];
+const winningCombinations = [['00','01','02'],['10', '11','12'],['20','21','22'], ['00','10','20'], ['01', '11','21'], ['02','12','22'], ['00','11','22'], ['20','11','02']];
 
 export class Game extends React.PureComponent<IAppProps,IAppState>{
     constructor(props: IAppProps){
