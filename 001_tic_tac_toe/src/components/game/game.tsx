@@ -2,24 +2,32 @@ import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
 import css from "../app.less";
+import {Route, BrowserRouter as Router, RouteComponentProps} from "react-router-dom";
+import {Scores} from "./scores";
+import {Menu} from "../menu/menu";
 
 export enum mode {
     one,
     two
 }
 
-export enum player {
+export enum p {
     p1,
     p2
 }
 
-interface IAppProps {
+interface RouteParams {
+    view: 'one' | 'two' | 'scores'
+}
+
+
+interface IAppProps extends RouteComponentProps<RouteParams>{
 
 }
 
 interface IAppState{
     mode: mode;
-    player: player;
+    player: p;
 }
 
 const winningCombinations = [['00','01','02'],['10', '11','12'],['20','21','22'], ['00','10','20'], ['01', '11','21'], ['02','12','22'], ['00','11','22'], ['20','11','02']];
@@ -29,7 +37,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         super(props);
 
         this.state = {
-            player: player.p1,
+            player: p.p1,
             mode: mode.one
         };
 
@@ -42,27 +50,30 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
     render(){
         const {player,mode} = this.state;
+        const {match} = this.props;
+        const gameView = match.params.view == 'scores' ? <Scores player={player} mode={mode} /> : <Board player={player} mode={mode} onPlay={this.onPlay}/>;
 
         return <div className={css.app}>
             <Header player={player} mode={mode}/>
-            <Board player={player} mode={mode} onPlay={this.onPlay}/>
+            {gameView}
         </div>
     }
 
     onPlay = (xx:number,yy:number) => {
+        const {player} = this.state;
         const x = xx.toString();
         const y = yy.toString();
-        const combPlayer = this.state.player == player.p1 ? this.combinationsP1 : this.combinationsP2;
+        const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
 
         combPlayer.push(x + y);
 
         for(const comb of winningCombinations){
-            if(comb.every(elem => combPlayer.indexOf(elem) > -1)){
-                alert("winnnerr")
+            if(comb.every(elem => combPlayer.includes(elem))){
+                const score = localStorage.getItem(player.toString());
+                localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
+                this.props.history.push("/game/scores");
             };
-        }
-        console.log(this.combinationsP1,this.combinationsP2);
-
-        this.setState({player: this.state.player == player.p1 ? player.p2 : player.p1})
+        };
+        this.setState({player: player == p.p1 ? p.p2 : p.p1})
     };
 };
