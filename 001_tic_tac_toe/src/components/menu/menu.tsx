@@ -12,12 +12,12 @@ export class Menu extends React.Component<{},{}>{
 
                 <div className={css.button}>
                     <span>
-                        <Link to="/game">One player</Link>
+                        <Link to="/game/one">One player</Link>
                     </span>
                 </div>
                 <div className={css.button}>
                     <span>
-                        <Link to="/game">Two player</Link>
+                        <Link to="/game/two">Two player</Link>
                     </span>
                 </div>
             </div>

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import css from "./board.less";
-import {mode, player} from "./game";
+import {mode, p} from "./game";
 
 interface IContainerProps {
-    player: player;
+    player: p;
     mode: mode;
     onPlay: (x:number,y:number) => void;
 }
@@ -38,16 +38,16 @@ export class Board extends React.PureComponent<IContainerProps,IContainerState>{
 }
 
 class PlayBox extends React.PureComponent<{
-    player: player
+    player: p
     onPlay: (x:number,y:number) => void;
     x: number;
     y: number;
 },{
-    value: player;
+    value: p;
 }>{
     render(){
         return <div className={css.box} onClick={this.onSelect}>
-            {this.state && (this.state.value == player.p1? "X" : "O")}
+            {this.state && (this.state.value == p.p1? "X" : "O")}
         </div>
     }
 
