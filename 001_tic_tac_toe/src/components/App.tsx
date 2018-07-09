@@ -7,6 +7,6 @@ import {Game} from "./game/game";
 export const App = () => <Router>
     <div className={css.app}>
         <Route exact path="/" component={Menu}/>
-        <Route path="/game/:view" component={Game}/>
+        <Route path="/game/:view?" component={Game}/>
     </div>
 </Router>;

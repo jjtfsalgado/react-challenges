@@ -17,7 +17,7 @@ export enum p {
 }
 
 interface RouteParams {
-    view: 'one' | 'two' | 'scores'
+    view: 'scores'
 }
 
 
