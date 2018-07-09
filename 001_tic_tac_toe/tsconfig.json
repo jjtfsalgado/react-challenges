@@ -5,6 +5,10 @@
     "module": "es6",
     "target": "es6",
     "jsx": "react",
+    "lib": [
+      "dom",
+      "es7"
+    ],
     "allowJs": true,
     "sourceMap": true,
     "moduleResolution": "node"
