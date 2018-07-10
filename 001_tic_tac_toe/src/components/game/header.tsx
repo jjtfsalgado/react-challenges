@@ -8,14 +8,17 @@ interface IHeaderProps {
     player: p;
     mode:mode;
     className?: string;
+    isScores: boolean;
 }
 
 export class Header extends React.Component<IHeaderProps,{}>{
     render(){
-        return <div className={css.header}>
-            <ScoreScreen {...this.props} type={p.p1} className={css.left}/>
+        const {isScores} = this.props;
+
+        return <div className={css.header}>sm
+            {!isScores && <ScoreScreen {...this.props} type={p.p1} className={css.left}/>}
             <Controls/>
-            <ScoreScreen {...this.props} type={p.p2} className={css.right}/>
+            {!isScores && <ScoreScreen {...this.props} type={p.p2} className={css.right}/>}
         </div>
     }
 }

@@ -1,9 +1,13 @@
 import * as React from 'react';
 import {mode, p} from "./game";
-import {Link} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import css from "./scores.less";
 
-interface IScoresProps {
+interface IScoreRoute{
+    winner: p
+}
+
+interface IScoresProps extends RouteComponentProps<IScoreRoute>{
     player: p;
     mode: mode;
 }
@@ -26,20 +30,22 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
 
     render() {
         const {scoreP1, scoreP2} = this.state;
+        const {player, match} = this.props;
 
-        return <div className={css.menu}>
+
+        return <div className={css.scores}>
             <div className={css.title}>
-                <span>Tic Tac Toe</span>
+                <span>Player {match.params.winner == p.p1 ? "ONE" : "TWO"}</span>
             </div>
-            <div className={css.playermodes}>
-                <div>
+            <div className={css.players}>
+                <div className={css.score}>
                     Player 1: {scoreP1}
                 </div>
-                <div>
+                <div className={css.score}>
                     Player 2: {scoreP2}
                 </div>
             </div>
-            <div>
+            <div className={css.playagain}>
                 <Link to="/game">Play again</Link>
             </div>
         </div>
