@@ -2,9 +2,9 @@ import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
 import css from "../app.less";
-import {Route, BrowserRouter as Router, RouteComponentProps} from "react-router-dom";
+import {Route, RouteComponentProps} from "react-router-dom";
 import {Scores} from "./scores";
-import {Menu} from "../menu/menu";
+import {ROUTES} from "../../globals";
 
 export enum mode {
     one,
@@ -17,7 +17,6 @@ export enum p {
 }
 
 interface RouteParams {
-    view: 'scores'
 }
 
 
@@ -50,12 +49,13 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
     render(){
         const {player,mode} = this.state;
-        const {match} = this.props;
-        const gameView = match.params.view == 'scores' ? <Scores player={player} mode={mode} /> : <Board player={player} mode={mode} onPlay={this.onPlay}/>;
+        const {location} = this.props;
+        const isScores = location.pathname.startsWith("/game/scores/");
 
         return <div className={css.app}>
-            <Header player={player} mode={mode}/>
-            {gameView}
+            <Header player={player} mode={mode} isScores={isScores}/>
+            <Route path={ROUTES.modeOne} render={(props) => <Board {...props} player={player} mode={mode} onPlay={this.onPlay}/>}/>
+            <Route path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={mode} />}/>
         </div>
     }
 
@@ -71,7 +71,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
             if(comb.every(elem => combPlayer.includes(elem))){
                 const score = localStorage.getItem(player.toString());
                 localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
-                this.props.history.push("/game/scores");
+                this.props.history.push(`/game/scores/${player}`);
             };
         };
         this.setState({player: player == p.p1 ? p.p2 : p.p1})
