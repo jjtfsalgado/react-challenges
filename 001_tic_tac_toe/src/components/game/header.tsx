@@ -15,7 +15,7 @@ export class Header extends React.Component<IHeaderProps,{}>{
     render(){
         const {isScores} = this.props;
 
-        return <div className={css.header}>sm
+        return <div className={css.header}>
             {!isScores && <ScoreScreen {...this.props} type={p.p1} className={css.left}/>}
             <Controls/>
             {!isScores && <ScoreScreen {...this.props} type={p.p2} className={css.right}/>}

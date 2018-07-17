@@ -70,6 +70,9 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         for(const comb of winningCombinations){
             if(comb.every(elem => combPlayer.includes(elem))){
                 const score = localStorage.getItem(player.toString());
+                this.combinationsP1 = [];
+                this.combinationsP2 = [];
+
                 localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
                 this.props.history.push(`/game/scores/${player}`);
             };
