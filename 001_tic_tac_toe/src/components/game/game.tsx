@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {Board} from "./board";
+import {BoardTwo} from "./board_two";
 import {Header} from "./header";
 import css from "../app.less";
 import {Route, RouteComponentProps} from "react-router-dom";
-import {Scores} from "./scores";
+import {Scores} from "../scores/scores";
 import {ROUTES} from "../../globals";
+import {BoardOne} from "./board_one";
 
 export enum mode {
     one,
@@ -48,14 +49,15 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
     combinationsP2:Array<string>;
 
     render(){
-        const {player,mode} = this.state;
+        const {player} = this.state;
         const {location} = this.props;
         const isScores = location.pathname.startsWith("/game/scores/");
 
         return <div className={css.app}>
-            <Header player={player} mode={mode} isScores={isScores}/>
-            <Route path={ROUTES.modeOne} render={(props) => <Board {...props} player={player} mode={mode} onPlay={this.onPlay}/>}/>
-            <Route path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={mode} />}/>
+            <Header player={player} mode={this.state.mode} isScores={isScores}/>
+            <Route path={ROUTES.modeOne} render={(props) => <BoardOne {...props} player={player} onPlay={this.onPlay}/>}/>
+            <Route path={ROUTES.modeTwo} render={(props) => <BoardTwo {...props} player={player} onPlay={this.onPlayTwo}/>}/>
+            <Route path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={this.state.mode} />}/>
         </div>
     }
 
@@ -78,5 +80,30 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
             };
         };
         this.setState({player: player == p.p1 ? p.p2 : p.p1})
+    };
+
+    onPlayTwo = (xx:number,yy:number) => {
+        const {player} = this.state;
+        const x = xx.toString();
+        const y = yy.toString();
+        const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
+
+        combPlayer.push(x + y);
+
+        for(const comb of winningCombinations){
+            if(comb.every(elem => combPlayer.includes(elem))){
+                const score = localStorage.getItem(player.toString());
+                this.combinationsP1 = [];
+                this.combinationsP2 = [];
+
+                localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
+                this.props.history.push(`/game/scores/${player}`);
+            };
+        };
+        this.setState({player: player == p.p1 ? p.p2 : p.p1}, () => player == p.p1 && this.onComputerPlay())
+    };
+
+    onComputerPlay = () => {
+        alert("computer should play now")
     };
 };

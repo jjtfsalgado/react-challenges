@@ -4,7 +4,6 @@ import {mode, p} from "./game";
 
 interface IContainerProps {
     player: p;
-    mode: mode;
     onPlay: (x:number,y:number) => void;
 }
 
@@ -12,7 +11,7 @@ interface IContainerState {
 
 }
 
-export class Board extends React.PureComponent<IContainerProps,IContainerState>{
+export class BoardOne extends React.PureComponent<IContainerProps,IContainerState>{
 
     render() {
         const {player, onPlay} = this.props;

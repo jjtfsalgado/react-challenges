@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {mode, p} from "./game";
+import {mode, p} from "../game/game";
 import {Link, RouteComponentProps} from "react-router-dom";
 import css from "./scores.less";
 import {ROUTES} from "../../globals";
