@@ -51,6 +51,7 @@ class PlayBox extends React.PureComponent<{
         </div>
     }
 
+    //pass the state to the parent and based on the props select the fields
     onSelect = () => {
         const {player, onPlay, x, y} = this.props;
 
