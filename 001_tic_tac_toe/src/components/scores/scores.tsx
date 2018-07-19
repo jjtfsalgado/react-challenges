@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {mode, p} from "../game/game";
+import {m, p} from "../game/game";
 import {Link, RouteComponentProps} from "react-router-dom";
 import css from "./scores.less";
 import {ROUTES} from "../../globals";
@@ -10,7 +10,7 @@ interface IScoreRoute{
 
 interface IScoresProps extends RouteComponentProps<IScoreRoute>{
     player: p;
-    mode: mode;
+    mode: m;
 }
 
 interface IScoresState {
@@ -46,7 +46,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
                 </div>
             </div>
             <div className={css.playagain}>
-                <Link to={this.props.mode == mode.one ? ROUTES.modeOne : ROUTES.modeTwo}>Play again</Link>
+                <Link to={this.props.mode == m.one ? ROUTES.modeOne : ROUTES.modeTwo}>Play again</Link>
             </div>
         </div>
     }

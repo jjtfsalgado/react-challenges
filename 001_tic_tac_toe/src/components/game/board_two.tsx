@@ -1,10 +1,12 @@
 import * as React from 'react';
 import css from "./board.less";
-import {mode, p} from "./game";
+import {m, p} from "./game";
 
 interface IContainerProps {
     player: p;
     onPlay: (x:number,y:number) => void;
+    x:number;
+    y:number;
 }
 
 interface IContainerState {
@@ -14,51 +16,52 @@ interface IContainerState {
 export class BoardTwo extends React.PureComponent<IContainerProps,IContainerState>{
 
     render() {
-        const {player, onPlay} = this.props;
+        const {x, y} = this.props;
 
         return <div className={css.board}>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={onPlay} x={0} y={0}/>
-                <PlayBox player={player} onPlay={onPlay} x={1} y={0}/>
-                <PlayBox player={player} onPlay={onPlay} x={2} y={0}/>
+                <PlayBox {...this.props} x={0} y={0} selected={x===0 && y===0}/>
+                <PlayBox {...this.props} x={1} y={0} selected={x===1 && y===0}/>
+                <PlayBox {...this.props} x={2} y={0} selected={x===2 && y===0}/>
             </div>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={onPlay} x={0} y={1}/>
-                <PlayBox player={player} onPlay={onPlay} x={1} y={1}/>
-                <PlayBox player={player} onPlay={onPlay} x={2} y={1}/>
+                <PlayBox {...this.props} x={0} y={1} selected={x===0 && y===1}/>
+                <PlayBox {...this.props} x={1} y={1} selected={x===1 && y===1}/>
+                <PlayBox {...this.props} x={2} y={1} selected={x===2 && y===1}/>
             </div>
             <div className={css.row}>
-                <PlayBox player={player} onPlay={onPlay} x={0} y={2}/>
-                <PlayBox player={player} onPlay={onPlay} x={1} y={2}/>
-                <PlayBox player={player} onPlay={onPlay} x={2} y={2}/>
+                <PlayBox {...this.props} x={0} y={2} selected={x===0 && y===2}/>
+                <PlayBox {...this.props} x={1} y={2} selected={x===1 && y===2}/>
+                <PlayBox {...this.props} x={2} y={2} selected={x===2 && y===2}/>
             </div>
         </div>
     }
 }
 
-class PlayBox extends React.PureComponent<{
-    player: p
+class PlayBox extends React.Component<{
+    player: p;
+    selected: boolean;
     onPlay: (x:number,y:number) => void;
     x: number;
     y: number;
-},{
-    value: p;
-}>{
+},{}>{
+
+    shouldComponentUpdate(nextProps: any){
+        if(!nextProps.selected){
+            return false;
+        }
+        return true;
+    }
+
     render(){
-        const {player} = this.props;
+        const {player, selected} = this.props;
         return <div className={css.box} onClick={player == p.p1 ? this.onSelect : null}>
-            {this.state && (this.state.value == p.p1? "X" : "O")}
+            {selected && (player == p.p2 ? "X" : "O")}
         </div>
     }
 
-    //pass the state to the parent and based on the props select the fields
     onSelect = () => {
-        const {player, onPlay, x, y} = this.props;
-
-        if(this.state){return};
-
-        this.setState({
-            value: player
-        }, () => onPlay(x,y))
+        const {onPlay, x, y} = this.props;
+        onPlay(x,y)
     };
 }

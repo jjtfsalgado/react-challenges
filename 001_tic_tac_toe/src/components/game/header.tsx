@@ -1,12 +1,12 @@
 import * as React from 'react';
 import css from "./header.less";
-import {mode, p} from "./game";
+import {m, p} from "./game";
 import {Link} from "react-router-dom";
 import {cls} from "../../utils";
 
 interface IHeaderProps {
     player: p;
-    mode:mode;
+    mode:m;
     className?: string;
     isScores: boolean;
 }
