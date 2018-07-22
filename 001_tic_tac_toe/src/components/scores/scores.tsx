@@ -31,7 +31,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
 
     render() {
         const {scoreP1, scoreP2} = this.state;
-        const {player, match} = this.props;
+        const {player, match, mode} = this.props;
 
         return <div className={css.scores}>
             <div className={css.title}>
@@ -46,7 +46,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
                 </div>
             </div>
             <div className={css.playagain}>
-                <Link to={this.props.mode == m.one ? ROUTES.modeOne : ROUTES.modeTwo}>Play again</Link>
+                <Link to={mode == m.one ? ROUTES.gameOne: ROUTES.gameTwo}>Play again</Link>
             </div>
         </div>
     }

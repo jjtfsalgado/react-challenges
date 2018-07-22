@@ -18,12 +18,12 @@ export class Menu extends React.Component<{},{}>{
             <div className={css.playermodes}>
                 <div className={css.button}>
                     <span>
-                        <Link to={ROUTES.modeOne}>One player</Link>
+                        <Link to={ROUTES.gameOne}>One player</Link>
                     </span>
                 </div>
                 <div className={css.button}>
                     <span>
-                        <Link to={ROUTES.modeTwo}>Two player</Link>
+                        <Link to={ROUTES.gameTwo}>Two player</Link>
                     </span>
                 </div>
             </div>
