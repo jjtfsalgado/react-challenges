@@ -1,6 +1,6 @@
 import * as React from 'react';
 import css from "./board.less";
-import {IRouteParams, p} from "./game";
+import {IRouteParams, m, p} from "./game";
 import {RouteComponentProps} from "react-router-dom";
 
 interface IContainerProps extends RouteComponentProps<IRouteParams>{
@@ -39,7 +39,7 @@ export class Board extends React.PureComponent<IContainerProps,IContainerState>{
     }
 }
 
-interface IPlayBoxProps {
+interface IPlayBoxProps extends RouteComponentProps<IRouteParams> {
     player: p;
     selected: boolean;
     onPlay: (x:number,y:number) => void;
@@ -51,7 +51,9 @@ interface IPlayBoxState {
 
 }
 
-class PlayBox extends React.Component<IPlayBoxProps,IPlayBoxState >{
+class PlayBox extends React.Component<IPlayBoxProps,IPlayBoxState>{
+
+    selected: boolean;
 
     shouldComponentUpdate(nextProps: IPlayBoxProps, nextState: IPlayBoxState){
         if (nextProps.selected) {
@@ -63,13 +65,21 @@ class PlayBox extends React.Component<IPlayBoxProps,IPlayBoxState >{
     render(){
         const {player, selected} = this.props;
 
+        if(selected){
+            this.selected = true;
+        }
+
         return <div className={css.box} onClick={this.onSelect}>
-            {selected && (player == p.p2 ? "X" : "O")}
+            {this.selected && (player == p.p2 ? "X" : "O")}
         </div>
     }
 
     onSelect = () => {
-        const {onPlay, x, y} = this.props;
+        const {onPlay, x, y, match, player} = this.props;
+
+        if(this.selected || match.params.mode === m.one && player === p.p2){
+            return false;
+        }
         onPlay(x,y)
     };
 }

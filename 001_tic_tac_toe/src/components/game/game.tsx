@@ -54,24 +54,24 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
     render(){
         const {player, x, y} = this.state;
         const {location} = this.props;
-        const isScores = location.pathname.startsWith("/game/scores/");
+        const isScores = location.pathname.includes("scores");
 
         return <div className={css.app}>
             <Header player={player} isScores={isScores}/>
             <Route exact path={ROUTES.game} render={(props) => <Board {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
-            <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player}/>}/>
+            <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player} />}/>
         </div>
     }
 
     onPlay = (xx:number,yy:number) => {
         const {player} = this.state;
         const {match, history} = this.props;
-        const x = xx.toString();
-        const y = yy.toString();
         const mode = match.params.mode;
         const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
+        let x = xx;
+        let y = yy;
 
-        combPlayer.push(x + y);
+        combPlayer.push(x.toString() + y.toString());
 
         //check if there was any winner play
         for(const comb of winningCombinations){
@@ -79,21 +79,18 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
                 const score = localStorage.getItem(player.toString());
                 this.combinationsP1 = [];
                 this.combinationsP2 = [];
-
+                x = null;
+                y = null;
                 localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
-                history.push(`/game/scores/${player}`);
-                return this.setState({
-                    player: player == p.p1 ? p.p2 : p.p1,
-                    x:null,
-                    y:null
-                });
+                history.push(`/game/${mode}/scores/${player}`);
+                break;
             };
         };
 
         this.setState({
             player: player == p.p1 ? p.p2 : p.p1,
-            x: xx,
-            y: yy
+            x,
+            y
         }, () => {
             if(mode === m.one && player == p.p1){
                 this.onComputerPlay()
@@ -108,6 +105,6 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
                 x:2,
                 y:1
             })
-        }, 1000)
+        }, 500)
     };
 };
