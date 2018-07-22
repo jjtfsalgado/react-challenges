@@ -1,8 +1,13 @@
 import * as React from 'react';
 import css from "./board.less";
 import {m, p} from "./game";
+import {RouteComponentProps} from "react-router-dom";
 
-interface IContainerProps {
+interface RouteParams {
+
+}
+
+interface IContainerProps extends RouteComponentProps<RouteParams>{
     player: p;
     onPlay: (x:number,y:number) => void;
     x:number;
@@ -13,7 +18,7 @@ interface IContainerState {
 
 }
 
-export class BoardTwo extends React.PureComponent<IContainerProps,IContainerState>{
+export class Board extends React.PureComponent<IContainerProps,IContainerState>{
 
     render() {
         const {x, y} = this.props;
@@ -38,24 +43,31 @@ export class BoardTwo extends React.PureComponent<IContainerProps,IContainerStat
     }
 }
 
-class PlayBox extends React.Component<{
+interface IPlayBoxProps {
     player: p;
     selected: boolean;
     onPlay: (x:number,y:number) => void;
     x: number;
     y: number;
-},{}>{
+}
 
-    shouldComponentUpdate(nextProps: any){
-        if(!nextProps.selected){
-            return false;
+interface IPlayBoxState {
+
+}
+
+class PlayBox extends React.Component<IPlayBoxProps,IPlayBoxState >{
+
+    shouldComponentUpdate(nextProps: IPlayBoxProps, nextState: IPlayBoxState){
+        if (nextProps.selected) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     render(){
         const {player, selected} = this.props;
-        return <div className={css.box} onClick={player == p.p1 ? this.onSelect : null}>
+
+        return <div className={css.box} onClick={this.onSelect}>
             {selected && (player == p.p2 ? "X" : "O")}
         </div>
     }

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import {BoardTwo} from "./board_two";
+import {Board} from "./board";
 import {Header} from "./header";
 import css from "../app.less";
-import {Route, RouteComponentProps} from "react-router-dom";
+import {Route, RouteComponentProps, Switch} from "react-router-dom";
 import {Scores} from "../scores/scores";
 import {ROUTES} from "../../globals";
 
 export enum m {
-    one,
-    two
+    one = "one",
+    two = "two"
 }
 
 export enum p {
@@ -17,6 +17,7 @@ export enum p {
 }
 
 interface RouteParams {
+    mode: m
 }
 
 
@@ -25,7 +26,6 @@ interface IAppProps extends RouteComponentProps<RouteParams>{
 }
 
 interface IAppState{
-    mode: m;
     player: p;
     x:number;
     y:number;
@@ -39,7 +39,6 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
         this.state = {
             player: p.p1,
-            mode: props.location.pathname == ROUTES.modeOne ? m.one : m.two,
             y:null,
             x: null
         };
@@ -55,19 +54,21 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         const {player, x, y} = this.state;
         const {location} = this.props;
         const isScores = location.pathname.startsWith("/game/scores/");
+        const mode = this.props.match.params.mode;
 
         return <div className={css.app}>
-            <Header player={player} mode={this.state.mode} isScores={isScores}/>
-            <Route path={ROUTES.modeOne} render={(props) => <BoardTwo {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
-            <Route path={ROUTES.modeTwo} render={(props) => <BoardTwo {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
-            <Route path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={this.state.mode} />}/>
+            <Header player={player} mode={mode} isScores={isScores}/>
+            <Route exact path={ROUTES.game} render={(props) => <Board {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
+            <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={mode} />}/>
         </div>
     }
 
     onPlay = (xx:number,yy:number) => {
-        const {player, mode} = this.state;
+        const {player} = this.state;
+        const {match, history} = this.props;
         const x = xx.toString();
         const y = yy.toString();
+        const mode = match.params.mode;
         const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
 
         combPlayer.push(x + y);
@@ -79,7 +80,12 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
                 this.combinationsP2 = [];
 
                 localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
-                this.props.history.push(`/game/scores/${player}`);
+                history.push(`/game/scores/${player}`);
+                return this.setState({
+                    player: player == p.p1 ? p.p2 : p.p1,
+                    x:null,
+                    y:null
+                });
             };
         };
 
@@ -88,7 +94,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
             x: xx,
             y: yy
         }, () => {
-            if(mode === m.two && player == p.p1){
+            if(mode === m.one && player == p.p1){
                 this.onComputerPlay()
             }
         });
