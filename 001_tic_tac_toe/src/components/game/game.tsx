@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
 import css from "../app.less";
-import {Route, RouteComponentProps, Switch} from "react-router-dom";
+import {Route, RouteComponentProps} from "react-router-dom";
 import {Scores} from "../scores/scores";
 import {ROUTES} from "../../globals";
 
@@ -16,12 +16,13 @@ export enum p {
     p2
 }
 
-interface RouteParams {
-    mode: m
+export interface IRouteParams {
+    winner: p;
+    mode: m;
 }
 
 
-interface IAppProps extends RouteComponentProps<RouteParams>{
+interface IAppProps extends RouteComponentProps<IRouteParams>{
 
 }
 
@@ -54,12 +55,11 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         const {player, x, y} = this.state;
         const {location} = this.props;
         const isScores = location.pathname.startsWith("/game/scores/");
-        const mode = this.props.match.params.mode;
 
         return <div className={css.app}>
-            <Header player={player} mode={mode} isScores={isScores}/>
+            <Header player={player} isScores={isScores}/>
             <Route exact path={ROUTES.game} render={(props) => <Board {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
-            <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player} mode={mode} />}/>
+            <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player}/>}/>
         </div>
     }
 
@@ -73,6 +73,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
         combPlayer.push(x + y);
 
+        //check if there was any winner play
         for(const comb of winningCombinations){
             if(comb.every(elem => combPlayer.includes(elem))){
                 const score = localStorage.getItem(player.toString());

@@ -3,10 +3,10 @@ import css from "./header.less";
 import {m, p} from "./game";
 import {Link} from "react-router-dom";
 import {cls} from "../../utils";
+import {ROUTES} from "../../globals";
 
 interface IHeaderProps {
     player: p;
-    mode:m;
     className?: string;
     isScores: boolean;
 }
@@ -37,7 +37,7 @@ const ScoreScreen = (props: Partial<IHeaderProps> & { type: p }) => {
 class Controls extends React.Component<{}, {}> {
     render() {
         return <div className={css.controls}>
-            <Link to="/">Menu</Link>
+            <Link to={ROUTES.menu}>Menu</Link>
         </div>
     }
 }

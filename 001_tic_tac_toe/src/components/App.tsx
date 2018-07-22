@@ -7,7 +7,7 @@ import {ROUTES} from "../globals";
 
 export const App = () => <Router>
     <div className={css.app}>
-        <Route exact path="/" component={Menu}/>
+        <Route exact path={ROUTES.menu} component={Menu}/>
         <Route path={ROUTES.game} component={Game}/>
     </div>
 </Router>;

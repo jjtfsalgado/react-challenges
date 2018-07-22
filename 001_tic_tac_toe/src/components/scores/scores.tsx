@@ -1,16 +1,11 @@
 import * as React from 'react';
-import {m, p} from "../game/game";
+import {IRouteParams, m, p} from "../game/game";
 import {Link, RouteComponentProps} from "react-router-dom";
 import css from "./scores.less";
 import {ROUTES} from "../../globals";
 
-interface IScoreRoute{
-    winner: p
-}
-
-interface IScoresProps extends RouteComponentProps<IScoreRoute>{
+interface IScoresProps extends RouteComponentProps<IRouteParams>{
     player: p;
-    mode: m;
 }
 
 interface IScoresState {
@@ -31,7 +26,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
 
     render() {
         const {scoreP1, scoreP2} = this.state;
-        const {player, match, mode} = this.props;
+        const {match} = this.props;
 
         return <div className={css.scores}>
             <div className={css.title}>
@@ -46,7 +41,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
                 </div>
             </div>
             <div className={css.playagain}>
-                <Link to={mode == m.one ? ROUTES.gameOne: ROUTES.gameTwo}>Play again</Link>
+                <Link to={match.params.mode == m.one ? ROUTES.gameOne: ROUTES.gameTwo}>Play again</Link>
             </div>
         </div>
     }

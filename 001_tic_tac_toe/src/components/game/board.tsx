@@ -1,13 +1,9 @@
 import * as React from 'react';
 import css from "./board.less";
-import {m, p} from "./game";
+import {IRouteParams, p} from "./game";
 import {RouteComponentProps} from "react-router-dom";
 
-interface RouteParams {
-
-}
-
-interface IContainerProps extends RouteComponentProps<RouteParams>{
+interface IContainerProps extends RouteComponentProps<IRouteParams>{
     player: p;
     onPlay: (x:number,y:number) => void;
     x:number;
