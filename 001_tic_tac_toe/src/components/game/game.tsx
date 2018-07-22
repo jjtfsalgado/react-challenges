@@ -32,7 +32,8 @@ interface IAppState{
     y:number;
 }
 
-const winningCombinations = [['00','01','02'],['10', '11','12'],['20','21','22'], ['00','10','20'], ['01', '11','21'], ['02','12','22'], ['00','11','22'], ['20','11','02']];
+const strategyComb = [['00','20','22'],['00','02','22'],['00','11','20'],['00','11','20'],['00','11','02'],['20','11','22'],['02','11','22']];
+const winningComb = [['00','01','02'],['10', '11','12'],['20','21','22'], ['00','10','20'], ['01', '11','21'], ['02','12','22'], ['00','11','22'], ['20','11','02']];
 
 export class Game extends React.PureComponent<IAppProps,IAppState>{
     constructor(props: IAppProps){
@@ -74,7 +75,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         combPlayer.push(x.toString() + y.toString());
 
         //check if there was any winner play
-        for(const comb of winningCombinations){
+        for(const comb of winningComb){
             if(comb.every(elem => combPlayer.includes(elem))){
                 const score = localStorage.getItem(player.toString());
                 this.combinationsP1 = [];
@@ -99,11 +100,27 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
     };
 
     onComputerPlay = () => {
+        let x = 2;
+        let y = 2;
+
+        for(const comb of winningComb) {
+            const combFilter = comb.filter(i => this.combinationsP1.includes(i));
+            if(combFilter.length == 2){
+                const remaining = comb.find(i => !this.combinationsP1.includes(i) && !this.combinationsP2.includes(i));
+                if (remaining){
+                    x = +remaining[0];
+                    y = +remaining[1];
+                }
+            }
+        };
+
+        this.combinationsP2.push(x.toString() + y.toString());
+
         setTimeout(() =>{
             this.setState({
                 player: p.p1,
-                x:2,
-                y:1
+                x,
+                y
             })
         }, 500)
     };
