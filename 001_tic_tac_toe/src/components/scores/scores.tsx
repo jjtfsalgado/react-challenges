@@ -30,7 +30,7 @@ export class Scores extends React.PureComponent<IScoresProps,IScoresState>{
 
         return <div className={css.scores}>
             <div className={css.title}>
-                <span>Player {match.params.winner == p.p1 ? "ONE" : "TWO"} won</span>
+                <span>{match.params.winner == "draw" ? "It's a tie" : `Player ${match.params.winner == p.p1 ? "ONE" : "TWO"} won`}</span>
             </div>
             <div className={css.players}>
                 <div className={css.score}>

@@ -17,7 +17,7 @@ export enum p {
 }
 
 export interface IRouteParams {
-    winner: p;
+    winner: p | 'draw';
     mode: m;
 }
 
@@ -71,6 +71,9 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         let x = xx;
         let y = yy;
 
+        if(this.combinationsP2.length + this.combinationsP1.length == 9){
+            return alert("draw")
+        }
         combPlayer.push(x.toString() + y.toString());
 
         //check if there was any winner play
@@ -109,14 +112,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
             const combWin = comb.filter(i => this.combinationsP2.includes(i));
             const remaining = comb.find(i => !this.combinationsP1.includes(i) && !this.combinationsP2.includes(i));
 
-            if(combFilter.length == 2){
-                if (remaining){
-                    x = +remaining[0];
-                    y = +remaining[1];
-                    break;
-                }
-            } else if(combWin.length == 2) {
-                if (remaining) {
+            if(combWin.length == 2 && remaining) {
                     x = +remaining[0];
                     y = +remaining[1];
 
@@ -126,25 +122,25 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
                     localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
                     history.push(`/game/${match.params.mode}/scores/${player}`);
                     break;
-                }
-            }else if(combWin.length == 1){
-                if (remaining){
+            } else if(combFilter.length == 2 && remaining){
                     x = +remaining[0];
                     y = +remaining[1];
-                }
-            }else if(combFilter.length == 0){
-                if (remaining){
+            }else if(combWin.length == 1 && combFilter.length === 0 && remaining && !x && !y){
                     x = +remaining[0];
                     y = +remaining[1];
-                }
+            }else if(remaining && !x && !y){
+                    x = +remaining[0];
+                    y = +remaining[1];
             }
         };
 
-        this.combinationsP2.push(x.toString() + y.toString());
-
         if(this.combinationsP2.length + this.combinationsP1.length == 9){
-            //go to tie
+            this.combinationsP1 = [];
+            this.combinationsP2 = [];
+            return history.push(`/game/${match.params.mode}/scores/draw`);
         }
+
+        this.combinationsP2.push(x.toString() + y.toString());
 
         setTimeout(() => this.setState({player: p.p1,x,y}), 500);
     };
