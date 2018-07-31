@@ -65,29 +65,16 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
     onPlay = (xx:number,yy:number) => {
         const {player} = this.state;
-        const {match, history} = this.props;
+        const {match} = this.props;
         const mode = match.params.mode;
         const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
         let x = xx;
         let y = yy;
 
-        if(this.combinationsP2.length + this.combinationsP1.length == 9){
-            return alert("draw")
-        }
         combPlayer.push(x.toString() + y.toString());
 
-        //check if there was any winner play
-        for(const comb of winningComb){
-            if(comb.every(elem => combPlayer.includes(elem))){
-                const score = localStorage.getItem(player.toString());
-                this.combinationsP1 = [];
-                this.combinationsP2 = [];
-                x = null;
-                y = null;
-                localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
-                history.push(`/game/${mode}/scores/${player}`);
-                break;
-            };
+        if(this.analyzePlay(mode, player)){
+            return
         };
 
         this.setState({
@@ -101,11 +88,55 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         });
     };
 
+    analyzePlay = (mode, player) => {
+        const {history, match} = this.props;
+        const combPlayer = player == p.p1 ? this.combinationsP1 : this.combinationsP2;
+        let stop;
+
+        if((this.combinationsP2.length + this.combinationsP1.length) === 9){
+            this.combinationsP1 = [];
+            this.combinationsP2 = [];
+
+            setTimeout(() => {
+                history.push(`/game/${match.params.mode}/scores/draw`)
+            },500);
+            stop = true;
+        }else{
+            //check if there was any winner play
+            for(const comb of winningComb){
+                if(comb.every(elem => combPlayer.includes(elem))){
+                    const score = localStorage.getItem(player.toString());
+                    this.combinationsP1 = [];
+                    this.combinationsP2 = [];
+                    localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
+                    history.push(`/game/${mode}/scores/${player}`);
+                    stop = true;
+                    break;
+                };
+            };
+        }
+
+        if(stop){
+            this.setState({
+                player: player == p.p1 ? p.p2 : p.p1,
+                x: null,
+                y: null
+            }, () => {
+                if(mode === m.one && player == p.p1){
+                    this.onComputerPlay()
+                }
+            });
+        }
+
+        return stop;
+    };
+
     onComputerPlay = () => {
         let x: number = null;
         let y: number = null;
         const {player} = this.state;
-        const {match, history} = this.props;
+        const {match} = this.props;
+        const mode = match.params.mode;
 
         for(const comb of winningComb) {
             const combFilter = comb.filter(i => this.combinationsP1.includes(i));
@@ -113,34 +144,28 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
             const remaining = comb.find(i => !this.combinationsP1.includes(i) && !this.combinationsP2.includes(i));
 
             if(combWin.length == 2 && remaining) {
-                    x = +remaining[0];
-                    y = +remaining[1];
-
-                    const score = localStorage.getItem(player.toString());
-                    this.combinationsP1 = [];
-                    this.combinationsP2 = [];
-                    localStorage.setItem(player.toString(), score ? (+score + 1).toString() : "1");
-                    history.push(`/game/${match.params.mode}/scores/${player}`);
-                    break;
+                x = +remaining[0];
+                y = +remaining[1];
+                break;
             } else if(combFilter.length == 2 && remaining){
-                    x = +remaining[0];
-                    y = +remaining[1];
+                x = +remaining[0];
+                y = +remaining[1];
             }else if(combWin.length == 1 && combFilter.length === 0 && remaining && !x && !y){
-                    x = +remaining[0];
-                    y = +remaining[1];
+                x = +remaining[0];
+                y = +remaining[1];
             }else if(remaining && !x && !y){
-                    x = +remaining[0];
-                    y = +remaining[1];
+                x = +remaining[0];
+                y = +remaining[1];
             }
         };
 
-        if(this.combinationsP2.length + this.combinationsP1.length == 9){
-            this.combinationsP1 = [];
-            this.combinationsP2 = [];
-            return history.push(`/game/${match.params.mode}/scores/draw`);
-        }
-
         this.combinationsP2.push(x.toString() + y.toString());
+
+        if(this.analyzePlay(mode, player)){
+            return
+        };
+
+        console.log(this.combinationsP2, this.combinationsP1);
 
         setTimeout(() => this.setState({player: p.p1,x,y}), 500);
     };
