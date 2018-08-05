@@ -131,6 +131,10 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         return stop;
     };
 
+    getRandomInt = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     onComputerPlay = () => {
         let x: number = null;
         let y: number = null;
@@ -138,26 +142,34 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         const {match} = this.props;
         const mode = match.params.mode;
 
-        for(const comb of winningComb) {
-            const combFilter = comb.filter(i => this.combinationsP1.includes(i));
-            const combWin = comb.filter(i => this.combinationsP2.includes(i));
-            const remaining = comb.find(i => !this.combinationsP1.includes(i) && !this.combinationsP2.includes(i));
 
-            if(combWin.length == 2 && remaining) {
-                x = +remaining[0];
-                y = +remaining[1];
-                break;
-            } else if(combFilter.length == 2 && remaining){
-                x = +remaining[0];
-                y = +remaining[1];
-            }else if(combWin.length == 1 && combFilter.length === 0 && remaining && !x && !y){
-                x = +remaining[0];
-                y = +remaining[1];
-            }else if(remaining && !x && !y){
-                x = +remaining[0];
-                y = +remaining[1];
-            }
-        };
+        if(this.combinationsP1.length !== 0 && this.combinationsP2.length !== 0){
+            for(const comb of winningComb) {
+                const combFilter = comb.filter(i => this.combinationsP1.includes(i));
+                const combWin = comb.filter(i => this.combinationsP2.includes(i));
+                const remaining = comb.find(i => !this.combinationsP1.includes(i) && !this.combinationsP2.includes(i));
+
+                if(combWin.length == 2 && remaining) {
+                    x = +remaining[0];
+                    y = +remaining[1];
+                    break;
+                } else if(combFilter.length == 2 && remaining){
+                    x = +remaining[0];
+                    y = +remaining[1];
+                }else if(combWin.length == 1 && combFilter.length === 0 && remaining && !x && !y){
+                    x = +remaining[0];
+                    y = +remaining[1];
+                }else if(remaining && !x && !y){
+                    x = +remaining[0];
+                    y = +remaining[1];
+                }
+            };
+        }else{
+            const randN = this.getRandomInt(0, 7);
+            const randPlay = winningComb[randN][this.getRandomInt(0,2)];
+            x = +randPlay[0];
+            y = +randPlay[1];
+        }
 
         this.combinationsP2.push(x.toString() + y.toString());
 
