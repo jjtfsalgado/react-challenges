@@ -16,15 +16,20 @@ export class Menu extends React.Component<{},{}>{
                 <span>Tic Tac Toe</span>
             </div>
             <div className={css.playermodes}>
-                <div className={css.button}>
+                <div className={css.header}>
+                    How do you want to play?
+                </div>
+                <div className={css.buttons}>
+                    <div className={css.button}>
                     <span>
                         <Link to={ROUTES.gameOne}>One player</Link>
                     </span>
-                </div>
-                <div className={css.button}>
+                    </div>
+                    <div className={css.button}>
                     <span>
                         <Link to={ROUTES.gameTwo}>Two player</Link>
                     </span>
+                    </div>
                 </div>
             </div>
         </div>

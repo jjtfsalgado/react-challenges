@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
-import css from "../app.less";
+import css from "./game.less";
 import {Route, RouteComponentProps} from "react-router-dom";
 import {Scores} from "../scores/scores";
 import {ROUTES} from "../../globals";
@@ -56,7 +56,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         const {location} = this.props;
         const isScores = location.pathname.includes("scores");
 
-        return <div className={css.app}>
+        return <div className={css.game}>
             <Header player={player} isScores={isScores}/>
             <Route exact path={ROUTES.game} render={(props) => <Board {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
             <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player} />}/>
@@ -75,12 +75,12 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
 
         if(this.analyzePlay(mode, player)){
             return
-        };
+        }
 
         this.setState({
-            player: player == p.p1 ? p.p2 : p.p1,
             x,
-            y
+            y,
+            player: player == p.p1 ? p.p2 : p.p1
         }, () => {
             if(mode === m.one && player == p.p1){
                 this.onComputerPlay()
@@ -96,10 +96,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         if((this.combinationsP2.length + this.combinationsP1.length) === 9){
             this.combinationsP1 = [];
             this.combinationsP2 = [];
-
-            setTimeout(() => {
-                history.push(`/game/${match.params.mode}/scores/draw`)
-            },500);
+            history.push(`/game/${match.params.mode}/scores/draw`)
             stop = true;
         }else{
             //check if there was any winner play
@@ -172,13 +169,11 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         }
 
         this.combinationsP2.push(x.toString() + y.toString());
-
+        
         if(this.analyzePlay(mode, player)){
             return
+
         };
-
-        console.log(this.combinationsP2, this.combinationsP1);
-
-        setTimeout(() => this.setState({player: p.p1,x,y}), 500);
+        setTimeout(() => this.setState({x, y, player: p.p1}), 500);
     };
 };

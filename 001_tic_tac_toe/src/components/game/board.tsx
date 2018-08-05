@@ -2,6 +2,7 @@ import * as React from 'react';
 import css from "./board.less";
 import {IRouteParams, m, p} from "./game";
 import {RouteComponentProps} from "react-router-dom";
+import {cls} from "../../utils";
 
 interface IContainerProps extends RouteComponentProps<IRouteParams>{
     player: p;
@@ -22,17 +23,17 @@ export class Board extends React.PureComponent<IContainerProps,IContainerState>{
         return <div className={css.board}>
             <div className={css.row}>
                 <PlayBox {...this.props} x={0} y={0} selected={x===0 && y===0}/>
-                <PlayBox {...this.props} x={1} y={0} selected={x===1 && y===0}/>
+                <PlayBox {...this.props} className={css.vertical} x={1} y={0} selected={x===1 && y===0}/>
                 <PlayBox {...this.props} x={2} y={0} selected={x===2 && y===0}/>
             </div>
             <div className={css.row}>
-                <PlayBox {...this.props} x={0} y={1} selected={x===0 && y===1}/>
-                <PlayBox {...this.props} x={1} y={1} selected={x===1 && y===1}/>
-                <PlayBox {...this.props} x={2} y={1} selected={x===2 && y===1}/>
+                <PlayBox {...this.props} className={css.horizontal} x={0} y={1} selected={x===0 && y===1}/>
+                <PlayBox {...this.props} className={cls(css.vertical, css.horizontal)} x={1} y={1} selected={x===1 && y===1}/>
+                <PlayBox {...this.props} className={css.horizontal} x={2} y={1} selected={x===2 && y===1}/>
             </div>
             <div className={css.row}>
                 <PlayBox {...this.props} x={0} y={2} selected={x===0 && y===2}/>
-                <PlayBox {...this.props} x={1} y={2} selected={x===1 && y===2}/>
+                <PlayBox {...this.props} className={css.vertical} x={1} y={2} selected={x===1 && y===2}/>
                 <PlayBox {...this.props} x={2} y={2} selected={x===2 && y===2}/>
             </div>
         </div>
@@ -43,6 +44,7 @@ interface IPlayBoxProps extends RouteComponentProps<IRouteParams> {
     player: p;
     selected: boolean;
     onPlay: (x:number,y:number) => void;
+    className?: string;
     x: number;
     y: number;
 }
@@ -63,13 +65,13 @@ class PlayBox extends React.Component<IPlayBoxProps,IPlayBoxState>{
     }
 
     render(){
-        const {player, selected} = this.props;
+        const {player, selected, className} = this.props;
 
         if(selected){
             this.selected = true;
         }
 
-        return <div className={css.box} onClick={this.onSelect}>
+        return <div className={cls(css.box, className)} onClick={this.onSelect}>
             {this.selected && (player == p.p2 ? "X" : "O")}
         </div>
     }
