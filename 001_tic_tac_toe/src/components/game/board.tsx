@@ -11,34 +11,30 @@ interface IContainerProps extends RouteComponentProps<IRouteParams>{
     y:number;
 }
 
-interface IContainerState {
 
-}
-
-export class Board extends React.PureComponent<IContainerProps,IContainerState>{
-
-    render() {
-        const {x, y} = this.props;
-
-        return <div className={css.board}>
+export const Board = (props: IContainerProps) => {
+    const {x, y} = props;
+    return (
+        <div className={css.board}>
             <div className={css.row}>
-                <PlayBox {...this.props} x={0} y={0} selected={x===0 && y===0}/>
-                <PlayBox {...this.props} className={css.vertical} x={1} y={0} selected={x===1 && y===0}/>
-                <PlayBox {...this.props} x={2} y={0} selected={x===2 && y===0}/>
+                <PlayBox {...props} x={0} y={0} selected={x===0 && y===0}/>
+                <PlayBox {...props} className={css.vertical} x={1} y={0} selected={x===1 && y===0}/>
+                <PlayBox {...props} x={2} y={0} selected={x===2 && y===0}/>
             </div>
             <div className={css.row}>
-                <PlayBox {...this.props} className={css.horizontal} x={0} y={1} selected={x===0 && y===1}/>
-                <PlayBox {...this.props} className={cls(css.vertical, css.horizontal)} x={1} y={1} selected={x===1 && y===1}/>
-                <PlayBox {...this.props} className={css.horizontal} x={2} y={1} selected={x===2 && y===1}/>
+                <PlayBox {...props} className={css.horizontal} x={0} y={1} selected={x===0 && y===1}/>
+                <PlayBox {...props} className={cls(css.vertical, css.horizontal)} x={1} y={1} selected={x===1 && y===1}/>
+                <PlayBox {...props} className={css.horizontal} x={2} y={1} selected={x===2 && y===1}/>
             </div>
             <div className={css.row}>
-                <PlayBox {...this.props} x={0} y={2} selected={x===0 && y===2}/>
-                <PlayBox {...this.props} className={css.vertical} x={1} y={2} selected={x===1 && y===2}/>
-                <PlayBox {...this.props} x={2} y={2} selected={x===2 && y===2}/>
+                <PlayBox {...props} x={0} y={2} selected={x===0 && y===2}/>
+                <PlayBox {...props} className={css.vertical} x={1} y={2} selected={x===1 && y===2}/>
+                <PlayBox {...props} x={2} y={2} selected={x===2 && y===2}/>
             </div>
         </div>
-    }
+    )
 }
+
 
 interface IPlayBoxProps extends RouteComponentProps<IRouteParams> {
     player: p;

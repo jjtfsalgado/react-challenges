@@ -11,22 +11,20 @@ interface IHeaderProps {
     isScores: boolean;
 }
 
-export class Header extends React.Component<IHeaderProps,{}>{
-    render(){
-        const {isScores} = this.props;
-
-        return <div className={css.header}>
-            {!isScores && <ScoreScreen {...this.props} type={p.p1} className={css.left}/>}
+export const Header = (props: IHeaderProps) => {
+    const {isScores} = props;
+    return (
+        <div className={css.header}>
+            {!isScores && <ScoreScreen {...props} type={p.p1} className={css.left}/>}
             <Controls/>
-            {!isScores && <ScoreScreen {...this.props} type={p.p2} className={css.right}/>}
-        </div>
-    }
-}
+            {!isScores && <ScoreScreen {...props} type={p.p2} className={css.right}/>}
+        </div>)
+};
 
 const ScoreScreen = (props: Partial<IHeaderProps> & { type: p }) => {
     return <div className={cls(css.score, props.className)}>
         <div className={css.name}>
-            {props.player== props.type && (props.type == 0 ? "Player 1" : "Player 2")}
+            {props.player == props.type && (props.type == 0 ? "Player 1" : "Player 2")}
         </div>
         <div className={css.number}>
             0
@@ -34,10 +32,8 @@ const ScoreScreen = (props: Partial<IHeaderProps> & { type: p }) => {
     </div>
 };
 
-class Controls extends React.Component<{}, {}> {
-    render() {
-        return <div className={css.controls}>
-            <Link to={ROUTES.menu}>Menu</Link>
-        </div>
-    }
-}
+const Controls = () => (
+    <div className={css.controls}>
+        <Link to={ROUTES.menu}>Menu</Link>
+    </div>
+);

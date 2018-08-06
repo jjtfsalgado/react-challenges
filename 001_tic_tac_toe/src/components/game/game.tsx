@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Board} from "./board";
 import {Header} from "./header";
-import css from "./game.less";
 import {Route, RouteComponentProps} from "react-router-dom";
 import {Scores} from "../scores/scores";
 import {ROUTES} from "../../globals";
@@ -56,11 +55,11 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         const {location} = this.props;
         const isScores = location.pathname.includes("scores");
 
-        return <div className={css.game}>
+        return <React.Fragment>
             <Header player={player} isScores={isScores}/>
             <Route exact path={ROUTES.game} render={(props) => <Board {...props} x={x} y={y} player={player} onPlay={this.onPlay}/>}/>
             <Route exact path={ROUTES.scores} render={(props) => <Scores {...props} player={player} />}/>
-        </div>
+        </React.Fragment>
     }
 
     onPlay = (xx:number,yy:number) => {
@@ -169,7 +168,7 @@ export class Game extends React.PureComponent<IAppProps,IAppState>{
         }
 
         this.combinationsP2.push(x.toString() + y.toString());
-        
+
         if(this.analyzePlay(mode, player)){
             return
 
